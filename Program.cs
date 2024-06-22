@@ -2,6 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using DotNetEnv;
 
 using api.Data;
+using api.Interfaces;
+using api.Repository;
+using System.Security.Cryptography.Xml;
 
 var builder = WebApplication.CreateBuilder(args);
 Env.Load();
@@ -12,11 +15,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddControllers().AddNewtonsoftJson(option =>
+{
+    option.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+});
+
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
     options.UseSqlServer(Constants.CONNECTION_STRING);
 });
 
+builder.Services.AddScoped<IStockRepository, StockRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("dev", policyBuilder =>
