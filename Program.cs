@@ -39,7 +39,7 @@ builder.Services.AddCors(options =>
 
     options.AddPolicy("prod", policyBuilder =>
     {
-        policyBuilder.WithOrigins("http://localhost:3000");
+        policyBuilder.WithOrigins("https://cs-front.onrender.com");
         policyBuilder.AllowAnyHeader();
         policyBuilder.AllowAnyMethod();
         policyBuilder.AllowCredentials();
