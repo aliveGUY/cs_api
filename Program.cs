@@ -17,6 +17,25 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseSqlServer(Constants.CONNECTION_STRING);
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("dev", policyBuilder =>
+    {
+        policyBuilder.WithOrigins("http://localhost:3000");
+        policyBuilder.AllowAnyHeader();
+        policyBuilder.AllowAnyMethod();
+        policyBuilder.AllowCredentials();
+    });
+
+    options.AddPolicy("prod", policyBuilder =>
+    {
+        policyBuilder.WithOrigins("http://localhost:3000");
+        policyBuilder.AllowAnyHeader();
+        policyBuilder.AllowAnyMethod();
+        policyBuilder.AllowCredentials();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -29,5 +48,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.MapControllers();
+
+app.UseCors("dev");
+app.UseCors("prod");
 
 app.Run();
