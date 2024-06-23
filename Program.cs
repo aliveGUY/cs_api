@@ -4,7 +4,6 @@ using DotNetEnv;
 using api.Data;
 using api.Interfaces;
 using api.Repository;
-using System.Security.Cryptography.Xml;
 
 var builder = WebApplication.CreateBuilder(args);
 Env.Load();
