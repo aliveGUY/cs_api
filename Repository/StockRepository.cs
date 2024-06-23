@@ -8,15 +8,11 @@ using api.Models;
 
 namespace api.Repository
 {
-  public class StockRepository : IStockRepository
+  public class StockRepository(ApplicationDBContext context) : IStockRepository
   {
-    private readonly ApplicationDBContext _context;
-    public StockRepository(ApplicationDBContext context)
-    {
-      _context = context;
-    }
+    private readonly ApplicationDBContext _context = context;
 
-    public async Task<Stock> CreateAsync(Stock stockModel)
+        public async Task<Stock> CreateAsync(Stock stockModel)
     {
       await _context.Stocks.AddAsync(stockModel);
       await _context.SaveChangesAsync();

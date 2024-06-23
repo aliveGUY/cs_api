@@ -4,18 +4,15 @@ using api.Mappers;
 using api.Dtos.Stock;
 using api.Interfaces;
 using api.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace api.Controllers
 {
   [Route("api/stock")]
   [ApiController]
-  public class StockController : ControllerBase
+  public class StockController(IStockRepository stockRepo) : ControllerBase
   {
-    private readonly IStockRepository _stockRepo;
-    public StockController(IStockRepository stockRepo)
-    {
-      _stockRepo = stockRepo;
-    }
+    private readonly IStockRepository _stockRepo = stockRepo;
 
     [HttpGet]
     public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
@@ -44,6 +41,7 @@ namespace api.Controllers
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> Create([FromBody] CreateStockRequestDto stockDto)
     {
       if (!ModelState.IsValid)
@@ -57,6 +55,7 @@ namespace api.Controllers
 
     [HttpPut]
     [Route("{id:int}")]
+    [Authorize]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateStockRequestDto updateDto)
     {
       if (!ModelState.IsValid)
@@ -72,6 +71,7 @@ namespace api.Controllers
 
     [HttpDelete]
     [Route("{id:int}")]
+    [Authorize]
     public async Task<IActionResult> Delete([FromRoute] int id)
     {
       if (!ModelState.IsValid)
